@@ -41,8 +41,8 @@ pool_df['OWNERSHIP'] = pool_df['LIQUID'].values/(pool_df['ACTIVE_LIQUIDITY'].val
 pool_df['DAILY_FEES'] = pool_df['OWNERSHIP'].values*pool_df['MAX(DAY_VOL_USD)'].values*pool_df['MAX(FEE_PERCENT)'].values/100
 pool_df['WEEKLY_FEES'] = pool_df['OWNERSHIP'].values*pool_df['MAX(WEEK_VOL_USD)'].values*pool_df['MAX(FEE_PERCENT)'].values/100
 fee_df = pool_df[['POOL_NAME','DAILY_FEES', 'WEEKLY_FEES', 'OWNERSHIP', 'MAX(WEEK_VOL_USD)', 'MAX(DAY_VOL_USD)']]#.sort_values('DAILY_FEES', ascending=False)
-fee_df['DAILY_FEES'] = fee_df[['DAILY_FEES']].applymap(lambda x : np.round(np.asscalar(x),2))
-fee_df['WEEKLY_FEES'] = fee_df[['WEEKLY_FEES']].applymap(lambda x : np.round(np.asscalar(x),2))
+fee_df['DAILY_FEES'] = fee_df[['DAILY_FEES']].applymap(lambda x : np.round(np.item(x),2))
+fee_df['WEEKLY_FEES'] = fee_df[['WEEKLY_FEES']].applymap(lambda x : np.round(np.item(x),2))
 
 fee_df = fee_df[fee_df['DAILY_FEES'].notna()].sort_values('DAILY_FEES', ascending=False)
 
