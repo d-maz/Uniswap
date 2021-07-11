@@ -1,0 +1,42 @@
+import numpy as np
+import math
+from matplotlib import pyplot as plt
+import requests
+import json
+import pandas as pd
+from liquidity import calc_liquidity
+
+url = 'https://api.flipsidecrypto.com/api/v2/queries/eaad960d-2c48-4f95-abbf-51da8197689e/data/latest'
+
+response = requests.get(url)
+price_df = pd.DataFrame(response.json())
+
+url = 'https://api.flipsidecrypto.com/api/v2/queries/79d15dfa-8714-4256-86b1-ae4dfd37b747/data/latest'
+
+response = requests.get(url)
+pool_df = pd.DataFrame(response.json())
+
+#pool_df['PRICE'] = pool_df[['TOKEN1_ADDRESS']].applymap(lambda x: price_df[price_df['TOKEN_ADDRESS'] == x]['PRICE'].values) 
+
+usd_quant = 10000
+variance = 0.1
+
+pool_df['XREAL'] = usd_quant/pool_df[['TOKEN1_ADDRESS']].applymap(lambda x: price_df[price_df['TOKEN_ADDRESS'] == x]['PRICE'].values) 
+
+pool_df['UPPER_PRICE'] = pool_df['PRICE']*(1+variance)
+pool_df['LOWER_PRICE'] = pool_df['PRICE']*(1-variance)
+
+current_price = pool_df['PRICE'].values
+upper_price = pool_df['UPPER_PRICE'].values
+lower_price = pool_df['LOWER_PRICE'].values
+real_quantity = pool_df['XREAL'].values
+
+pool_df = pool_df[pool_df['XREAL'].map(len) == 1]
+
+
+pool_df['LIQUID'] = pool_df.apply(lambda x : calc_liquidity(x['PRICE'], x['UPPER_PRICE'], x['LOWER_PRICE'], x['XREAL'], x), axis=1)
+
+print([pool_df['POOL_NAME'], pool_df['LIQUID']])
+
+
+
