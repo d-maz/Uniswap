@@ -11,6 +11,6 @@ def calc_liquidity(current_price, upper_price, lower_price, x_real, x):
     
     y_real = L**2/(x_real+L/math.sqrt(upper_price)) - L*math.sqrt(lower_price)
 
-    print(x['POOL_NAME'], 'cp', current_price, 'up', upper_price, 'xreal', x_virtual_upper, 'L', L)
+    #print(x['POOL_NAME'], 'cp', current_price, 'up', upper_price, 'xreal', x_virtual_upper, 'L', L)
     return L#, y_real
 

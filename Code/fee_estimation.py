@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 import requests
 import json
 import pandas as pd
-from liquidity import calc_liquidity
+from liq_library import calc_liquidity
 
 
 current_price = 2133
