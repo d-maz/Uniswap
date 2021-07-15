@@ -18,13 +18,13 @@ pool_df = pd.DataFrame(response.json())
 
 #pool_df['PRICE'] = pool_df[['TOKEN1_ADDRESS']].applymap(lambda x: price_df[price_df['TOKEN_ADDRESS'] == x]['PRICE'].values) 
 
-usd_quant = 5000
-variance = 0.2
+usd_quant = 12500
+variance = 0.15
 
 pool_df['XREAL'] = usd_quant/pool_df[['TOKEN1_ADDRESS']].applymap(lambda x: price_df[price_df['TOKEN_ADDRESS'] == x]['PRICE'].values) 
 
 pool_df['UPPER_PRICE'] = pool_df['PRICE']*(1+variance)
-pool_df['LOWER_PRICE'] = pool_df['PRICE']*(1-variance)
+pool_df['LOWER_PRICE'] = pool_df['PRICE']*(1/(1+variance))
 
 current_price = pool_df['PRICE'].values
 upper_price = pool_df['UPPER_PRICE'].values
@@ -41,11 +41,11 @@ pool_df['OWNERSHIP'] = pool_df['LIQUID'].values/(pool_df['ACTIVE_LIQUIDITY'].val
 pool_df['DAILY_FEES'] = pool_df['OWNERSHIP'].values*pool_df['MAX(DAY_VOL_USD)'].values*pool_df['MAX(FEE_PERCENT)'].values/100
 pool_df['WEEKLY_FEES'] = pool_df['OWNERSHIP'].values*pool_df['MAX(WEEK_VOL_USD)'].values*pool_df['MAX(FEE_PERCENT)'].values/100
 fee_df = pool_df[['POOL_NAME','DAILY_FEES', 'WEEKLY_FEES', 'OWNERSHIP', 'MAX(WEEK_VOL_USD)', 'MAX(DAY_VOL_USD)']]#.sort_values('DAILY_FEES', ascending=False)
-fee_df['DAILY_FEES'] = fee_df[['DAILY_FEES']].applymap(lambda x : np.round(np.item(x),2))
-fee_df['WEEKLY_FEES'] = fee_df[['WEEKLY_FEES']].applymap(lambda x : np.round(np.item(x),2))
+fee_df['DAILY_FEES'] = fee_df[['DAILY_FEES']].applymap(lambda x : np.round(x.item(),2))
+fee_df['WEEKLY_FEES'] = fee_df[['WEEKLY_FEES']].applymap(lambda x : np.round(x.item(),2))
 
 fee_df = fee_df[fee_df['DAILY_FEES'].notna()].sort_values('DAILY_FEES', ascending=False)
 
-
+print('executed')
 
 
