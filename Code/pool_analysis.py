@@ -18,13 +18,18 @@ pool_df = pd.DataFrame(response.json())
 
 #pool_df['PRICE'] = pool_df[['TOKEN1_ADDRESS']].applymap(lambda x: price_df[price_df['TOKEN_ADDRESS'] == x]['PRICE'].values) 
 
+<<<<<<< HEAD
 usd_quant = 1000
 variance = 0.1
+=======
+usd_quant = 12500
+variance = 0.15
+>>>>>>> d10412372b4dc44ca484e750e95a75e3506f75ca
 
 pool_df['XREAL'] = usd_quant/pool_df[['TOKEN1_ADDRESS']].applymap(lambda x: price_df[price_df['TOKEN_ADDRESS'] == x]['PRICE'].values) 
 
 pool_df['UPPER_PRICE'] = pool_df['PRICE']*(1+variance)
-pool_df['LOWER_PRICE'] = pool_df['PRICE']*(1-variance)
+pool_df['LOWER_PRICE'] = pool_df['PRICE']*(1/(1+variance))
 
 current_price = pool_df['PRICE'].values
 upper_price = pool_df['UPPER_PRICE'].values
@@ -46,6 +51,6 @@ fee_df['WEEKLY_FEES'] = fee_df[['WEEKLY_FEES']].applymap(lambda x : np.round(x.i
 
 fee_df = fee_df[fee_df['DAILY_FEES'].notna()].sort_values('DAILY_FEES', ascending=False)
 
-
+print('executed')
 
 
