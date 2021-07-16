@@ -18,13 +18,10 @@ pool_df = pd.DataFrame(response.json())
 
 #pool_df['PRICE'] = pool_df[['TOKEN1_ADDRESS']].applymap(lambda x: price_df[price_df['TOKEN_ADDRESS'] == x]['PRICE'].values) 
 
-<<<<<<< HEAD
 usd_quant = 1000
 variance = 0.1
-=======
 usd_quant = 12500
 variance = 0.15
->>>>>>> d10412372b4dc44ca484e750e95a75e3506f75ca
 
 pool_df['XREAL'] = usd_quant/pool_df[['TOKEN1_ADDRESS']].applymap(lambda x: price_df[price_df['TOKEN_ADDRESS'] == x]['PRICE'].values) 
 
