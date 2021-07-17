@@ -7,15 +7,15 @@ import pandas as pd
 from liq_library import calc_liquidity
 
 
-current_price = 2133
-upper_price = 2445
-lower_price = 1855
+current_price = 1870
+upper_price = current_price*1.2
+lower_price = current_price*1/1.2
 real_quantity = 6
 
-Liquidity, USDC_required = calc_liquidity(current_price,upper_price,lower_price,real_quantity)
-print(type(Liquidity), type(USDC_required))
+Liquidity = calc_liquidity(current_price,upper_price,lower_price,real_quantity)
+#print(type(Liquidity), type(USDC_required))
 
-print('Liquidity: ', round(Liquidity[0],2), '\n' 'USDC required: ', round(USDC_required[0],2))
+#print('Liquidity: ', round(Liquidity[0],2), '\n' 'USDC required: ', round(USDC_required[0],2))
 
 pool_address = ['0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640', #usdc eth 0.05 
     '0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8', #usdc eth 0.3
