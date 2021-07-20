@@ -4,7 +4,6 @@ from gql import gql, Client
 from gql.transport.requests import RequestsHTTPTransport
 from datetime import datetime
 import pandas as pd
-from requests.api import get
 
 
 def calc_liquidity(current_price, upper_price, lower_price, x_real, x = 'optional'):
@@ -55,11 +54,12 @@ def get_price_history(pool = '0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8'):
         token1Price
         txCount
         liquidity
+        volumeToken0
+        volumeToken1
       }}
       token0Price
       token1Price
       liquidity
-      liquidityProviderCount
     }}
   }}
   ''')
@@ -69,8 +69,8 @@ def get_price_history(pool = '0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8'):
   df = pd.DataFrame(response['pool']['poolHourData'])
 
   df['periodStartUnix'] = df['periodStartUnix'].apply(datetime.fromtimestamp)
-  df[['close', 'token0Price', 'token1Price', 'liquidity']]= df[['close','token0Price', 'token1Price', 'liquidity']].applymap(float)
-
+  df[['close', 'token0Price', 'token1Price', 'liquidity', 'volumeToken0', 'volumeToken1']]= df[['close','token0Price', 'token1Price', 'liquidity', 'volumeToken0', 'volumeToken1']].applymap(float)
+  
   token0 = {
     'id': response['pool']['token0']['id'],
     'symbol' : response['pool']['token0']['symbol'],
@@ -84,7 +84,17 @@ def get_price_history(pool = '0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8'):
   pool = {
     'pool': pool,
     'active_liquidity': float(response['pool']['liquidity']),
-    'provider_count' : response['pool']['liquidityProviderCount']
+    'token0': token0,
+    'token1': token1
   }
-  
-  return df, token0, token1, pool
+
+  return df, pool
+
+
+# volatility calc
+
+# advanced fee calc
+
+# price simulation
+
+# risk metric

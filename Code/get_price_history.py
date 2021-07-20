@@ -41,6 +41,8 @@ def get_price_history(pool = '0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8'):
         token1Price
         txCount
         liquidity
+        volumeToken0
+        volumeToken1
       }}
       token0Price
       token1Price
@@ -55,7 +57,7 @@ def get_price_history(pool = '0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8'):
   df = pd.DataFrame(response['pool']['poolHourData'])
 
   df[['periodStartUnix']] = df['periodStartUnix'].apply(datetime.fromtimestamp)
-  df[['close', 'token0Price', 'token1Price', 'liquidity']]= df[['close','token0Price', 'token1Price', 'liquidity']].applymap(float)
+  df[['close', 'token0Price', 'token1Price', 'liquidity', 'volumeToken0', 'volumeToken1']]= df[['close','token0Price', 'token1Price', 'liquidity', 'volumeToken0', 'volumeToken1']].applymap(float)
   #plot = df.plot(x = 'periodStartUnix', y='close')
 
   #plot.set_xlabel('Date')
